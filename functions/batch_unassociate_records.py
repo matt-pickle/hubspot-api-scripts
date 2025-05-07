@@ -7,7 +7,7 @@ def batch_unassociate_records(fromRecordType, toRecordType, inputs, PRIVATE_APP_
 
    for i in range(0, len(inputs), 100):
       batch = inputs[i:i+100]
-      data = { "inputs": inputs }
+      data = { "inputs": batch }
 
       try:
          response = requests.post(url, headers=headers, json=data)
