@@ -17,7 +17,7 @@ def list_records(recordType, properties, PRIVATE_APP_KEY, after=0, records=None)
       json_response = response.json()
       print(f"Retrieved {recordType}: {len(json_response["results"])}")
       records.extend(json_response["results"])
-      if json_response["paging"]["next"]["after"]:
+      if json_response.get("paging") and json_response["paging"].get("next"):
          time.sleep(0.25)
          new_after = json_response["paging"]["next"]["after"]
          return list_records(recordType, properties, PRIVATE_APP_KEY, new_after, records)
