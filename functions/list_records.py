@@ -1,12 +1,12 @@
 import requests
 import time
 
-def list_records(recordType, PRIVATE_APP_KEY, properties, after=0, records=None):
+def list_records(recordType, properties, PRIVATE_APP_KEY, after=0, records=None):
    if records is None:
       records = []
    url = f"https://api.hubapi.com/crm/v3/objects/{recordType}?limit=100"
    if len(properties) > 0:
-      url += f"&properties={','.join(properties)}"
+      url += f"&properties={properties.join(",")}"
    if after:
       url += f"&after={after}"
    headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
