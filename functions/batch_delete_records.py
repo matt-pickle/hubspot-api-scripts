@@ -8,7 +8,7 @@ def batch_delete_records(recordType, ids, PRIVATE_APP_KEY):
    for i in range(0, len(ids), 100):
       batch = ids[i:i+100]
       inputs = []
-      for id in ids:
+      for id in batch:
          input = { "id": id }
          inputs.append(input)
       data = { "inputs": inputs }
