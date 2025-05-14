@@ -6,7 +6,7 @@ def list_records(recordType, properties, PRIVATE_APP_KEY, after=0, records=None)
       records = []
    url = f"https://api.hubapi.com/crm/v3/objects/{recordType}?limit=100"
    if len(properties) > 0:
-      url += f"&properties={properties.join(",")}"
+      url += f"&properties={",".join(properties)}"
    if after:
       url += f"&after={after}"
    headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
