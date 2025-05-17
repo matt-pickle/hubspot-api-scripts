@@ -1,26 +1,23 @@
-from dotenv import load_dotenv
-import os
+from utils.get_private_app_key import get_private_app_key
+from functions.list_records import Record
 from functions.list_records import list_records
+from functions.batch_read_associations import Association
 from functions.batch_read_associations import batch_read_associations
+from functions.batch_unassociate_records import AssociationInput
 from functions.batch_unassociate_records import batch_unassociate_records
 
-load_dotenv()
-PRIVATE_APP_KEY = os.getenv("PRIVATE_APP_KEY")
+PRIVATE_APP_KEY: str = get_private_app_key()
 
-contacts = list_records("contacts", [], PRIVATE_APP_KEY)
+contacts: list[Record] = list_records("contacts", [], PRIVATE_APP_KEY)
 
-contact_ids = [contact["id"] for contact in contacts]
+contact_ids: list[str] = [contact["id"] for contact in contacts]
 
-associations = batch_read_associations("contacts", "deals", contact_ids, PRIVATE_APP_KEY)
+associations: list[Association] = batch_read_associations("contacts", "deals", contact_ids, PRIVATE_APP_KEY)
 
-inputs = []
+inputs: list[AssociationInput] = []
 for assoc in associations:
-   input = {}
-   input["from"] = assoc["from"]
-   to = []
-   for to_assoc in assoc["to"]:
-      to.append({ "id": to_assoc["toObjectId"] })
-   input["to"] = to
-   inputs.append(input)
+    to: list[dict] = [ { "id": to["toObjectId"] } for to in assoc["to"]]
+    input: AssociationInput = { "from": assoc["from"], "to": to }
+    inputs.append(input)
 
 batch_unassociate_records("contacts", "deals", inputs, PRIVATE_APP_KEY)

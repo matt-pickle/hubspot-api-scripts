@@ -1,19 +1,33 @@
+from typing import TypedDict, Literal
 import requests
 import time
 
-def batch_unassociate_records(fromRecordType, toRecordType, inputs, PRIVATE_APP_KEY):
-   url = f"https://api.hubapi.com/crm/v4/associations/{fromRecordType}/{toRecordType}/batch/archive"
-   headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
+AssociationInput = TypedDict(
+    "AssociationInput",
+    {
+        "from": dict[Literal["id"], str],
+        "to": list[dict[Literal["id"], str]]
+    },
+)
 
-   for i in range(0, len(inputs), 100):
-      batch = inputs[i:i+100]
-      data = { "inputs": batch }
+def batch_unassociate_records(
+    fromRecordType: str,
+    toRecordType: str,
+    inputs: list[AssociationInput],
+    PRIVATE_APP_KEY: str
+) -> None:
+    url = f"https://api.hubapi.com/crm/v4/associations/{fromRecordType}/{toRecordType}/batch/archive"
+    headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
 
-      try:
-         response = requests.post(url, headers=headers, json=data)
-         response.raise_for_status()
-         print(f"Unassociated {fromRecordType} from {toRecordType}: {len(batch)}")
-      except requests.exceptions.RequestException as e:
-         print(f"Error unassociating {fromRecordType} from {toRecordType}: {e}")
+    for i in range(0, len(inputs), 100):
+        batch = inputs[i:i+100]
+        data = { "inputs": batch }
 
-      time.sleep(0.25)
+        try:
+            response = requests.post(url, headers=headers, json=data)
+            response.raise_for_status()
+            print(f"Unassociated {fromRecordType} from {toRecordType}: {len(batch)}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error unassociating {fromRecordType} from {toRecordType}: {e}")
+
+        time.sleep(0.25)
