@@ -1,7 +1,7 @@
 from utils.get_private_app_key import get_private_app_key
-from functions.list_records import Record
-from functions.list_records import list_records
-from functions.batch_delete_records import batch_delete_records
+from requests.list_records import Record
+from requests.list_records import list_records
+from requests.batch_delete_records import batch_delete_records
 
 PRIVATE_APP_KEY: str = get_private_app_key()
 

@@ -1,10 +1,10 @@
 from utils.get_private_app_key import get_private_app_key
-from functions.list_records import Record
-from functions.list_records import list_records
-from functions.batch_read_associations import Association
-from functions.batch_read_associations import batch_read_associations
-from functions.batch_unassociate_records import AssociationInput
-from functions.batch_unassociate_records import batch_unassociate_records
+from requests.list_records import Record
+from requests.list_records import list_records
+from requests.batch_read_associations import Association
+from requests.batch_read_associations import batch_read_associations
+from requests.batch_unassociate_records import AssociationInput
+from requests.batch_unassociate_records import batch_unassociate_records
 
 PRIVATE_APP_KEY: str = get_private_app_key()
 
