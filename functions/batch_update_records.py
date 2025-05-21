@@ -23,8 +23,8 @@ def batch_update_records(
     headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
     records: list[Record] = []
 
-    for i in range(0, len(inputs), 100):
-        batch = inputs[i:i+100]
+    for i in range(0, len(inputs), 25):
+        batch = inputs[i:i+25]
         data = { "inputs": batch }
 
         try:
