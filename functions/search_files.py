@@ -35,6 +35,10 @@ def search_files(
                 if new_after:
                     time.sleep(0.25)
                     return search_files(PRIVATE_APP_KEY, parent_folder_ids, new_after, records)
+    except requests.exceptions.ConnectionError as e:
+        print(f"Connection error: {e}. Retrying...")
+        time.sleep(1)
+        return search_files(PRIVATE_APP_KEY, parent_folder_ids, after, records)
     except requests.exceptions.RequestException as e:
         print(f"Error getting files: {e}")
 
