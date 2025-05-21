@@ -4,7 +4,7 @@ from functions.batch_update_records import UpdateInput, batch_update_records
 
 PRIVATE_APP_KEY: str = get_private_app_key()
 
-quotes: list[dict] = parse_csv("quotes.csv")
+quotes: list[dict] = parse_csv("input/quotes.csv")
 
 updateInputs: list[UpdateInput] = [
     {
