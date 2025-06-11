@@ -15,7 +15,7 @@ def list_records(
     propertyNames: list[str],
     PRIVATE_APP_KEY: str,
     after: str = "",
-    records: list[Record] = []
+    records: list[Record] | None = None
 ) -> list[Record]:
     if records is None:
         records = []
@@ -32,6 +32,11 @@ def list_records(
         json_response: Response = response.json()
         print(f"Retrieved {recordType}: {len(json_response['results'])}")
         records.extend(json_response["results"])
+        
+        if len(records) >= 10000:
+            print(f"Reached maximum record count (10,000). Stopping pagination.")
+            return records
+            
         paging = json_response.get("paging")
         if paging:
             next = paging.get("next")

@@ -28,7 +28,7 @@ def search_records(
     record_type: str,
     search_body: SearchBody,
     PRIVATE_APP_KEY: str,
-    records: list[Record] = []
+    records: list[Record] | None = None
 ) -> list[Record]:
     if records is None:
         records = []
