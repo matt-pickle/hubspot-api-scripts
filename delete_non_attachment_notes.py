@@ -1,13 +1,29 @@
 from functions.get_private_app_key import get_private_app_key
-from functions.list_records import Record, list_records
+from functions.search_records import Record, SearchBody, search_records
 from functions.batch_delete_records import batch_delete_records
 
 PRIVATE_APP_KEY: str = get_private_app_key()
 
-all_notes: list[Record] = list_records("notes", ["hs_note_body"], PRIVATE_APP_KEY)
+search_body: SearchBody = {
+    "filterGroups": [
+        {
+            "filters": [
+                {
+                    "propertyName": "hs_note_body",
+                    "operator": "NOT_CONTAINS_TOKEN",
+                    "value": "Salesforce Migration files for record"
+                }
+            ]
+        }
+    ],
+    "properties": ["hs_note_body"],
+    "limit": 100,
+    "after": 0
+}
+notes: list[Record] = search_records("notes", search_body, PRIVATE_APP_KEY)
 
 notes_to_delete: list[Record] = []
-for note in all_notes:
+for note in notes:
    if note["properties"]["hs_note_body"] is None or "Salesforce Migration files for record" not in note["properties"]["hs_note_body"]:
       notes_to_delete.append(note)
 
