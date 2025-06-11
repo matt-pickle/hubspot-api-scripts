@@ -1,6 +1,5 @@
 from typing import TypedDict, Literal
 import requests
-import time
 
 AssociationInput = TypedDict(
     "AssociationInput",
@@ -19,8 +18,8 @@ def batch_unassociate_records(
     url = f"https://api.hubapi.com/crm/v4/associations/{fromRecordType}/{toRecordType}/batch/archive"
     headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
 
-    for i in range(0, len(inputs), 100):
-        batch = inputs[i:i+100]
+    for i in range(0, len(inputs), 500):
+        batch = inputs[i:i+500]
         data = { "inputs": batch }
 
         try:
@@ -29,5 +28,3 @@ def batch_unassociate_records(
             print(f"Unassociated {fromRecordType} from {toRecordType}: {len(batch)}")
         except requests.exceptions.RequestException as e:
             print(f"Error unassociating {fromRecordType} from {toRecordType}: {e}")
-
-        time.sleep(0.25)

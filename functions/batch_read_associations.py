@@ -23,8 +23,8 @@ def batch_read_associations(
     headers = { "Authorization": f"Bearer {PRIVATE_APP_KEY}", "Content-Type": "application/json"}
     results: list[Association] = []
 
-    for i in range(0, len(ids), 100):
-        batch = ids[i:i+100]
+    for i in range(0, len(ids), 500):
+        batch = ids[i:i+500]
         inputs = []
         for id in batch:
             input = { "id": id }
